@@ -2,7 +2,6 @@ const express= require('express');
 const morgan= require('morgan');
 
 const bodyParser= require('body-parser');
-const createError= require('http-errors');
 const xssClean= require('xss-clean');
 const rateLimit= require('express-rate-limit');
 
@@ -10,6 +9,7 @@ const app =express();
 const {serverPort }=require('./secret');
 const { userRouter } = require('./routers/userRouter');
 const {mainPagerouter} = require('./routers/mainPageRouter');
+const { connectDB } = require('./config/db');
 
 
 
@@ -56,8 +56,9 @@ app.use((err,req,res,next)=>{
 
 ////////////////////////////////////////////////////////////////////////////////
 
-app.listen(serverPort,()=>{
+app.listen(serverPort, async()=>{
     console.log(`Server is running on port${serverPort}`);
+     connectDB();
 });
 
 
