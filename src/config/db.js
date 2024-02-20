@@ -3,9 +3,14 @@ const { mongoDBUrl } = require('../secret');
 
 const connectDB=(options={})=>{
     try{
-         mongoose.connect(mongoDBUrl,options)
-         .then(console.log('MongoDb is connected sucessfully'))
-         .catch(err=>console.error(err));
+        //  mongoose.connect(mongoDBUrl,options)
+        mongoose.connect('mongodb+srv://hayat:hayat@cluster-estate.hkxwcar.mongodb.net/MERN-E')
+       
+        .then(x=>{
+            // console.log(x);
+            return x;
+        })
+        .catch(err=>console.error(err));
        
         
 

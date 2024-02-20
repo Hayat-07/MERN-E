@@ -10,6 +10,7 @@ const {serverPort }=require('./secret');
 const { userRouter } = require('./routers/userRouter');
 const {mainPagerouter} = require('./routers/mainPageRouter');
 const { connectDB } = require('./config/db');
+const { seedRouter } = require('./routers/seedRouter');
 
 
 
@@ -38,6 +39,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 app.use(mainPagerouter);
 app.use('/api/users',userRouter);
+app.use('/api/seed',seedRouter);
 
 
 
