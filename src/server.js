@@ -11,6 +11,7 @@ const { userRouter } = require('./routers/userRouter');
 const {mainPagerouter} = require('./routers/mainPageRouter');
 const { connectDB } = require('./config/db');
 const { seedRouter } = require('./routers/seedRouter');
+const { errorResponse } = require('./controllers/responseController');
 
 
 
@@ -52,8 +53,14 @@ app.use((req,res,next)=>{
 })
 //server error handling;
 app.use((err,req,res,next)=>{
+    
     console.error(err.stack);
-    res.status(500).send({massage:"Server Error from middleWere"});
+
+    return errorResponse(res,{
+        statusCode:err.status,
+        message:err.massage
+
+    })
 })
 
 ////////////////////////////////////////////////////////////////////////////////
