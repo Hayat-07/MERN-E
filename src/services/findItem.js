@@ -15,7 +15,10 @@ const findWithId=async(Model,id,options={},next)=>{
           
 
     }catch(error){
-         next(error);
+        if(error instanceof mongoose.Error){
+            next(createError(400,'Invalid User Id'));
+        }
+         throw error;
     }
 
 

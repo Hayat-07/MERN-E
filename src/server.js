@@ -44,6 +44,24 @@ app.use('/api/seed',seedRouter);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //////////////////////////////////Error handle//////////////////////////////////
 
 //client error handling;
@@ -51,6 +69,14 @@ app.use((req,res,next)=>{
     res.status(404).json({ massage:"Route not found"});
     next();
 })
+
+
+
+
+
+
+
+
 //server error handling;
 app.use((err,req,res,next)=>{
     

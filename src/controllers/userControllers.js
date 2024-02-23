@@ -5,6 +5,57 @@ const { successResponse, errorResponse } = require('./responseController');
 const { default: mongoose } = require('mongoose');
 const { findWithId } = require('../services/findItem');
 const { deleteWithId } = require('../services/deleteItem');
+const { createJwt } = require('../helpers/jwt');
+const { jwtActivationKey } = require('../secret');
+
+
+const processRegister=async(req,res,next)=>{
+      
+    try{
+        const {name,email,password,phone,address}=req.body;
+        const isUserExists=await User.exists({email:email,phone:phone});
+        const userData={name,email,password,phone,address};
+        if(isUserExists){
+           throw createError(409,"User with this email and phone, already exists. Please Sign in. ")
+
+        }else{
+
+
+            const createNewItem=(await User.create({name,email,password,phone,address})).toObject();
+            if(createNewItem){
+                const token=createJwt(userData,jwtActivationKey,'10m');
+                console.log(createNewItem);
+                return successResponse(res,{
+                    statusCode:200,
+                    message:"user Created successfully by hayat",
+                    payload:{
+                        userData,
+                        createNewItem,
+                        token
+                    }
+        
+                })
+            }
+        }
+
+       
+
+
+        
+
+    }catch(error){
+       next(error);
+    }
+
+
+
+      
+};
+
+
+
+
+
 
 
 
@@ -61,17 +112,6 @@ const usersController= async(req,res,next)=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 const getUserController= async(req,res,next)=>{
     try{
         console.log(req.params.id);
@@ -90,7 +130,6 @@ const getUserController= async(req,res,next)=>{
         }
        
 
-
     }catch (error){
         console.log(error);
         if(error instanceof mongoose.Error){
@@ -99,6 +138,8 @@ const getUserController= async(req,res,next)=>{
         next(error);
     }
 };
+
+
 
 
 
@@ -135,6 +176,7 @@ const deleteUserController= async(req,res,next)=>{
 
 
 
+
  
 
-    module.exports={usersController,getUserController,deleteUserController};
+    module.exports={usersController,getUserController,deleteUserController,processRegister};

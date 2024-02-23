@@ -1,3 +1,5 @@
+const imgPath= '../public/images/products/users/default.jpg';
+
 let usersData={
     users:[
         {
@@ -5,70 +7,80 @@ let usersData={
             email:"hayat341@gmail.com",
             password:"asdf123@",
             phone:'1234567890',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
         {
             name:"suvo",
             email:"suvo341@gmail.com",
             password:"asdf111@",
             phone:'1234567890',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
         {
             name:"MDHAYATULLAH",
             email:"MD341@gmail.com",
             password:"asdf222@",
             phone:'1234567890',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
         {
             name:"Sweet",
             email:"Sweet341@gmail.com",
             password:"asdf222@",
             phone:'1234567890',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
         {
             name:"Jony555",
             email:"Jony555@gmail.com",
             password:"asdf555@",
             phone:'5555555555',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
         {
             name:"Saif",
             email:"Saif341@gmail.com",
             password:"asdf222@",
             phone:'1234567890',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
         {
             name:"Simul",
             email:"Simul341@gmail.com",
             password:"asdf222@",
             phone:'1234567890',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
         {
             name:"Tutul",
             email:"tutul341@gmail.com",
             password:"asdf222@",
             phone:'1234567890',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
         {
             name:"Rojob",
             email:"rojob341@gmail.com",
             password:"asdf222@",
             phone:'1234567890',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
         {
             name:"Benten1010",
             email:"Benten10@gmail.com",
             password:"asdf222@",
             phone:'1234567890',
-            address:'Shylet'
+            address:'Shylet',
+            image:imgPath
         },
     ]
 };
