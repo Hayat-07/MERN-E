@@ -12,6 +12,8 @@ const {mainPagerouter} = require('./routers/mainPageRouter');
 const { connectDB } = require('./config/db');
 const { seedRouter } = require('./routers/seedRouter');
 const { errorResponse } = require('./controllers/responseController');
+const { sendMyMail } = require('./helpers/sendMail');
+
 
 
 
@@ -41,6 +43,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(mainPagerouter);
 app.use('/api/users',userRouter);
 app.use('/api/seed',seedRouter);
+app.use('/api/send',(req,res)=>{
+    sendMyMail(req,res);
+});
 
 
 
