@@ -1,7 +1,7 @@
 
 const express=require("express");
 
-const { userProfileController, usersController, getUserController, deleteUserController, processRegister } = require("../controllers/userControllers");
+const { userProfileController, usersController, getUserController, deleteUserController, processRegister, createAccount } = require("../controllers/userControllers");
 const userRouter= express.Router();
 
 const isLoggedIn=(req,res,next)=>{
@@ -20,6 +20,7 @@ const isLoggedIn=(req,res,next)=>{
 
 
 userRouter.post("/register",isLoggedIn,processRegister);
+userRouter.post("/createAccount/:token",isLoggedIn,createAccount);
 userRouter.get("/",isLoggedIn,usersController);
 userRouter.get("/:id",isLoggedIn,usersController);
 userRouter.delete("/:id",isLoggedIn,deleteUserController);

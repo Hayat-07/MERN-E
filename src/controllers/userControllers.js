@@ -8,34 +8,64 @@ const { deleteWithId } = require('../services/deleteItem');
 const { createJwt } = require('../helpers/jwt');
 const { jwtActivationKey } = require('../secret');
 
+const { sendMyMail } = require('../helpers/sendMail');
+
+
+
+
+let userData={};
+
+const createAccount=async(req,res,next)=>{
+
+   try{
+    //  const {name,email,password,phone,address}=userData;
+    // const createNewItem=(await User.create({name,email,password,phone,address})).toObject();
+    // if(createNewItem){
+    //     const token=createJwt(userData,jwtActivationKey,'10m');
+    //     console.log(createNewItem);
+    //     return successResponse(res,{
+    //         statusCode:200,
+    //         message:"Congratulation Your account is created Successfully",
+    //         payload:{
+    //             userData,
+    //             createNewItem,
+    //             token
+    //         }
+
+    //     })
+    // }
+    
+  
+   }catch(err){
+    console.error(" Account is not created. Please check createAccount() from userControllers");
+    throw err;
+   }
+};
 
 const processRegister=async(req,res,next)=>{
       
     try{
         const {name,email,password,phone,address}=req.body;
         const isUserExists=await User.exists({email:email,phone:phone});
-        const userData={name,email,password,phone,address};
+        userData={name,email,password,phone,address};
+        console.log(userData);
         if(isUserExists){
            throw createError(409,"User with this email and phone, already exists. Please Sign in. ")
-
         }else{
-
-
-            const createNewItem=(await User.create({name,email,password,phone,address})).toObject();
-            if(createNewItem){
-                const token=createJwt(userData,jwtActivationKey,'10m');
-                console.log(createNewItem);
-                return successResponse(res,{
-                    statusCode:200,
-                    message:"user Created successfully by hayat",
-                    payload:{
-                        userData,
-                        createNewItem,
-                        token
-                    }
         
-                })
+
+          await sendMyMail(req,res,{ 
+                
+                to:email,
+                subject:"Account activation email",
+                text:" Please go to your email and varify to create your account.",
+                myhtml:`<h2>Helo ${name}</h2>
+                        <p>Please click here to this link: <a href="${process.env.CLIENT_URL}/api/users/createAccount/${token}"   target="_blank" >Activate</a> to Varyfy your account </p>
+                `
             }
+            );
+            
+           
         }
 
        
@@ -179,4 +209,4 @@ const deleteUserController= async(req,res,next)=>{
 
  
 
-    module.exports={usersController,getUserController,deleteUserController,processRegister};
+    module.exports={createAccount,usersController,getUserController,deleteUserController,processRegister};

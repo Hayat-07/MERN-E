@@ -1,6 +1,6 @@
 const nodeMailer= require('nodemailer');
 
-const sendMyMail=async(req,res,options={})=>{
+const sendMyMail=async(req,res,data={})=>{
 
    const testAccount= await nodeMailer.createTestAccount();
 
@@ -10,29 +10,30 @@ const sendMyMail=async(req,res,options={})=>{
        host: 'smtp.gmail.com',
     port: 587,
     auth: {
-        user: 'fiversuvo@gmail.com',
-        pass: 'yjmzbtvpinhcicpj'
+        user: process.env.SMTP_USERNAME,
+        pass: process.env.SMTP_PASSWORD,
     },
     });
 
    try{
     const info = await transporter.sendMail({
       from: 'fiversuvo@gmail.com', // sender address
-      to: ["suvo1607207@gmail.com"], // list of receivers
-      subject: "Hello by Hayat ✔", // Subject line
-      text: "Hello world by Hayat?", // plain text body
-      html: "<b>Hello world by Hayat?</b>", // html body
+      to: [data.to], // list of receivers
+      subject: data.subject, // Subject line
+      text: data.text, // plain text body
+      html: data.myhtml, // html body
     });
 
-    console.log("Message sent: %s", info.messageId);
+    console.log("Message sent:", info.messageId);
 
 
-
+   console.log(info.response);
    return res.json(info);
 
    
    }catch(err){
-    throw new Error(err);
+    console.error('Error occured while sending email');
+    throw err;
    }
 };
 

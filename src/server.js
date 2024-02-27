@@ -43,8 +43,15 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(mainPagerouter);
 app.use('/api/users',userRouter);
 app.use('/api/seed',seedRouter);
+
 app.use('/api/send',(req,res)=>{
-    sendMyMail(req,res);
+    sendMyMail(req,res,{
+        from:"fiversuvo@gmail.com",
+        to:"arch1607207@gmail.com",
+        subject:"Email from  fiversuvo@ ",
+        text:" This is an email sent from fversuvo to suvo1607207",
+        myhtml:" this is html"
+    });
 });
 
 
