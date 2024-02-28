@@ -5,6 +5,7 @@ const { successResponse, errorResponse } = require('./responseController');
 const { default: mongoose } = require('mongoose');
 const { findWithId } = require('../services/findItem');
 const { deleteWithId } = require('../services/deleteItem');
+const jwt = require('jsonwebtoken');
 const { createJwt } = require('../helpers/jwt');
 const { jwtActivationKey } = require('../secret');
 
@@ -12,29 +13,44 @@ const { sendMyMail } = require('../helpers/sendMail');
 
 
 
+// let userMy= {
+//     name:"kkkk",
+//     password:"123#asd",
+//     email:"arch1607207@gmail.com",
+//     phone:"0166666555",
+//     address:"chhhhhhhhhh"
+   
 
-let userData={};
+// }
 
-const createAccount=async(req,res,next)=>{
 
+const createAccount=async(req,res)=>{
+  
    try{
-    //  const {name,email,password,phone,address}=userData;
-    // const createNewItem=(await User.create({name,email,password,phone,address})).toObject();
-    // if(createNewItem){
-    //     const token=createJwt(userData,jwtActivationKey,'10m');
-    //     console.log(createNewItem);
-    //     return successResponse(res,{
-    //         statusCode:200,
-    //         message:"Congratulation Your account is created Successfully",
-    //         payload:{
-    //             userData,
-    //             createNewItem,
-    //             token
-    //         }
-
-    //     })
-    // }
+     
+     const mytoken= req.params.tkn || "defaultToken";
+     if(!mytoken) throw createError(404,"CreateAccount: Token not found");
+     const decodeToken=jwt.verify(mytoken,jwtActivationKey);
+     const {name,email,password,phone,address}=decodeToken;
+     const userData={name,email,password,phone,address};
+     console.log('DecodeToken:: ',decodeToken);
     
+    const createNewItem=(await User.create({name,email,password,phone,address,token:mytoken})).toObject();
+    if(createNewItem){
+        
+        console.log("createAccount:",createNewItem);
+        return successResponse(res,{
+            statusCode:200,
+            message:"Congratulation Your account is created Successfully",
+            payload:{
+                userData,
+                createNewItem,
+                token: mytoken
+            }
+
+        })
+    }
+   
   
    }catch(err){
     console.error(" Account is not created. Please check createAccount() from userControllers");
@@ -42,18 +58,19 @@ const createAccount=async(req,res,next)=>{
    }
 };
 
-const processRegister=async(req,res,next)=>{
+const processRegister=async(req,res)=>{
       
     try{
         const {name,email,password,phone,address}=req.body;
         const isUserExists=await User.exists({email:email,phone:phone});
-        userData={name,email,password,phone,address};
-        console.log(userData);
+        const userData={name,email,password,phone,address};
+       
+        console.log('processRegister :', userData);
         if(isUserExists){
            throw createError(409,"User with this email and phone, already exists. Please Sign in. ")
         }else{
         
-
+            const token=createJwt(userData,jwtActivationKey,'15m');
           await sendMyMail(req,res,{ 
                 
                 to:email,
